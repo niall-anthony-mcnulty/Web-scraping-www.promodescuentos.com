@@ -1,0 +1,7 @@
+### This is the content of your .gitignore file
+### -------------------------------------------
+
+# Ignore All (xlsx) files
+*.xlsx
+
+*.json
