@@ -21,6 +21,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition, ContentId)
 import pytz
 import openpyxl
+import os
 
 # ---------------------- loop through website for individual URLS ------------------- #
 # ----------------------------------------------------------------------------------- #
@@ -145,12 +146,14 @@ def job():
         
         try:
 
-            DRIVER_PATH = 'chromedriver'
+            
             # add headless mode
             options = Options()
+            options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
-            options.add_argument('--no-sandbox') # Bypass OS security model
-            driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--no-sandbox") # Bypass OS security model
+            driver = webdriver.Chrome(options=options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
             driver.get(urls)
 
             r = driver.page_source
