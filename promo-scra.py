@@ -140,7 +140,7 @@ def job():
     thumbs_up = []
 
     # count = 0
-    for urls in arr_url:
+    for urls in arr_url[0:50]:
         
         try:
 
@@ -803,7 +803,7 @@ def job():
 # schedule.every().day.at('13:58').do(job)
 # schedule.every(5).to(10).minutes.do(job)
 # schedule.every().monday.do(job)
-schedule.every().wednesday.at("14:25").do(job)
+schedule.every().wednesday.at("13:05").do(job)
 # schedule.every().minute.at(":17").do(job)
 
 while True:
