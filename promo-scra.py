@@ -803,7 +803,7 @@ def job():
 # schedule.every().day.at('13:58').do(job)
 # schedule.every(5).to(10).minutes.do(job)
 # schedule.every().monday.do(job)
-schedule.every().wednesday.at("15:35").do(job)
+schedule.every().thursday.at("15:53").do(job)
 # schedule.every().minute.at(":17").do(job)
 
 while True:
