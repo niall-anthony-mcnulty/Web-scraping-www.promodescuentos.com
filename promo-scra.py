@@ -763,6 +763,7 @@ def job():
     df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
 
     # # Save to xlsx format to handle encoding
+    df_nuevas_data.to_csv("nuevas_data.csv", index = False)
     df_nuevas_data.to_excel('nuevas_data.xlsx', encoding='utf-8')
 
 
