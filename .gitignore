@@ -9,5 +9,6 @@
 *.DS_Store
 
 *.csv
+!nuevas_urls.csv
 
 
