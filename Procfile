@@ -1,1 +1,1 @@
-worker: python scraper.py
+worker: python promo-scra.py
