@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
 import pandas as pd
 import re
 import requests
@@ -149,11 +150,13 @@ def job():
             
             # add headless mode
             options = Options()
+            s=Service(os.environ.get("CHROMEDRIVER_PATH"))
             options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--no-sandbox") # Bypass OS security model
-            driver = webdriver.Chrome(options=options, executable_path=os.environ.get("CHROMEDRIVER_PATH"))
+           
+            driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
 
             r = driver.page_source
