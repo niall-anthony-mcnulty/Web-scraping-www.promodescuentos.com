@@ -3,6 +3,7 @@
 
 # Ignore All (xlsx) files
 *.xlsx
+!nuevas_data.xlsx
 
 *.json
 
@@ -10,5 +11,6 @@
 
 *.csv
 !nuevas_urls.csv
+!nuevas_data.csv
 
 

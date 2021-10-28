@@ -15,10 +15,10 @@ from datetime import datetime
 import urllib
 import base64
 import os.path
+import schedule
 from apikey import *
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition, ContentId)
-import schedule
 import pytz
 
 # ---------------------- loop through website for individual URLS ------------------- #
@@ -101,12 +101,12 @@ import pytz
 def job():
     #read in URL csv - Load in from your own directory
 
-    directory = os.path.dirname(os.path.realpath(__file__))
-    filename = "nuevas_urls.csv"
-    file_path = os.path.join(directory,'Web-scraping-www.promodescuentos.com/', filename)
-    df_url = pd.read_csv(file_path, index_col=False)
-    
-    
+    # directory = os.path.dirname(os.path.realpath(__file__))
+    # filename = "nuevas_urls.csv"
+    # file_path = os.path.join(directory,'Web-scraping-www.promodescuentos.com/', filename)
+    df_url = pd.read_csv('nuevas_urls.csv', index_col=False)
+
+
     # create a list of URLS to iterate over
     arr_url = [ x for x in df_url['urls']]
 
@@ -144,14 +144,14 @@ def job():
         
         try:
 
-            DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/chromedriver'
+            DRIVER_PATH = 'chromedriver'
             # add headless mode
             options = Options()
             options.add_argument("--headless") # Runs Chrome in headless mode.
             options.add_argument('--no-sandbox') # Bypass OS security model
             driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
             driver.get(urls)
-    
+
             r = driver.page_source
             soup = BeautifulSoup(r, 'html.parser')
         #--------------------------------------------------------------------------------------------------------------------#   
@@ -290,9 +290,7 @@ def job():
             
                 # check for post date 
                 dates = soup.find_all('span',{'class' : "flex--toW3 overflow--wrap-off text--color-greyShade"})
-                print(len(dates))
-                print(dates)
-
+                
                 if len(dates) == 0:
                     # check for publication
                     pubs = soup.find('span', {'class' :'flex--toW3 overflow--wrap-off text--color-greyShade text--b'})
@@ -352,11 +350,13 @@ def job():
 
                 else:
                     # loop through the classes
-                    for date in dates:
+                    for normal_date in dates:
                     # check for clock icon
-                        if date.find('svg',{'class':'icon icon--clock text--color-greyShade'}):
+                        if normal_date.find('svg',{'class':'icon icon--clock text--color-greyShade'}):
                         # return value
-                            url_date = date.find('span',{'class':'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                            url_date = normal_date.find('span',{'class':'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                            url_date = re.sub('\((.*)\)', '', url_date)
+                            url_date = url_date.rstrip()
                             each_url_date.append(url_date)
 
 
@@ -650,7 +650,7 @@ def job():
             top_comment.append(None)
             thumbs_up.append(None)
                 
-                
+            
     #      # Save csv after every 500 iterations  
     #     if(count%500==0):
     #         data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
@@ -662,20 +662,18 @@ def job():
     # # Save complete file
     data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
     df_nuevas_data = pd.DataFrame.from_dict(data_dict)
-    df_nuevas_data += 1
-    # df_nuevas_data.to_csv("/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/nuevas_data.csv", index = False)
+    df_nuevas_data.to_csv("nuevas_data.csv", index = False)
                                                     
     # ------------------------------- Clean Data ---------------------------------------- #
     # ----------------------------------------------------------------------------------- #
                                                     
-    df_nuevas_data.info()
-    df_nuevas_data = df_nuevas_data['Date'].astype(str)
-    df_nuevas_data['Free_Shipping'] = df_nuevas_data['Free_Shipping'].astype(bool)                                                
-                                                    
+    # df_nuevas_data = df_nuevas_data['Date'].astype(str)
+    # df_nuevas_data['Free_Shipping'] = df_nuevas_data['Free_Shipping'].astype(bool)                                                
+                                                
     # ----------------------------------------------------------------------------------- #
     # ------------------------------- Adjust Date String -------------------------------- #                                                  
     def date_correction(col):
-    
+
         substring_double_year = '2020 2021'
         # check for substring
         if substring_double_year in col:
@@ -708,7 +706,7 @@ def job():
             # join them back together
             new_date_2 = ",".join(new_date)
             # return without trailing white space
-            return new_date_2
+            return new_date_2.rstrip()
                                                         
 
     # ----------------------------------------------------------------------------------- #
@@ -764,19 +762,14 @@ def job():
     df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
 
     # # Save to xlsx format to handle encoding
-    # df_nuevas_data.to_excel("/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/promodescuentos_full_scrape.xlsx', encoding='utf-8")
-                            
-                                        #-END-#
-    #--------------------------------------------------------------------------------------------#
-
-    directory = os.path.dirname(os.path.realpath(__file__))
-    filename = "promo-full-data.csv"
-    file_path = os.path.join(directory,'Web-scraping-www.promodescuentos.com/', filename)
-    df_nuevas_data.to_csv(file_path)
+    df_nuevas_data.to_excel('nuevas_data.xlsx', encoding='utf-8')
 
 
+    # ----------------------------------------------------------------------------------- #
+    # ------------------------ Encode & Email with Scheduler ---------------------------- # 
 
-    with open(file_path, 'rb') as f:
+
+    with open('nuevas_data.xlsx', 'rb') as f:
         data = f.read()
         f.close()
 
@@ -788,8 +781,8 @@ def job():
     html_content='<strong>Attached is Your Scraped File</strong>')
     attachment = Attachment()
     attachment.file_content = FileContent(encoded)
-    attachment.file_type = FileType('text/csv')
-    attachment.file_name = FileName('promo-full-data.csv')
+    attachment.file_type = FileType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    attachment.file_name = FileName('nuevas_data.xlsx')
     attachment.disposition = Disposition('attachment')
     attachment.content_id = ContentId('Example Content ID')
     message.attachment = attachment
@@ -816,3 +809,6 @@ schedule.every(5).to(10).minutes.do(job)
 while True:
     schedule.run_pending()
     time.sleep(1) # wait one minute
+
+
+
