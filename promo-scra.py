@@ -20,6 +20,7 @@ from apikey import *
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition, ContentId)
 import pytz
+import openpyxl
 
 # ---------------------- loop through website for individual URLS ------------------- #
 # ----------------------------------------------------------------------------------- #
@@ -803,7 +804,7 @@ def job():
 # schedule.every().day.at('13:58').do(job)
 # schedule.every(5).to(10).minutes.do(job)
 # schedule.every().monday.do(job)
-schedule.every().thursday.at("16:17").do(job)
+schedule.every().thursday.at("16:35").do(job)
 # schedule.every().minute.at(":17").do(job)
 
 while True:
