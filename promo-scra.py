@@ -140,7 +140,7 @@ def job():
     thumbs_up = []
 
     # count = 0
-    for urls in arr_url[0:50]:
+    for urls in arr_url[0:10]:
         
         try:
 
