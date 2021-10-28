@@ -816,7 +816,7 @@ schedule.every(2).minutes.do(job)
 
 while True:
     schedule.run_pending()
-    time.sleep(1) # wait one minute
+    time.sleep(0.1) # wait one minute
 
 
 
