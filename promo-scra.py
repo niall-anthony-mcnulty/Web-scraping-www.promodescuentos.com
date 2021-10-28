@@ -676,9 +676,9 @@ def job():
 
         substring_double_year = '2020 2021'
         # check for substring
-        if substring_double_year in col:
+        if substring_double_year in str(col):
             # split the string
-            split_column_values = col.split(" ")
+            split_column_values = str(col).split(" ")
             # empty string
             date_1_new = ''
             
@@ -702,7 +702,7 @@ def job():
             
         else:
             # split the string to erase weird symbol
-            new_date =  col.split("º.")
+            new_date =  str(col).split("º.")
             # join them back together
             new_date_2 = ",".join(new_date)
             # return without trailing white space
@@ -803,7 +803,7 @@ def job():
 # schedule.every().day.at('13:58').do(job)
 # schedule.every(5).to(10).minutes.do(job)
 # schedule.every().monday.do(job)
-schedule.every().thursday.at("15:53").do(job)
+schedule.every().thursday.at("16:15").do(job)
 # schedule.every().minute.at(":17").do(job)
 
 while True:
