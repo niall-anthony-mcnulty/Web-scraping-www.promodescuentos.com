@@ -104,9 +104,9 @@ import os
 def job():
     #read in URL csv - Load in from your own directory
 
-    directory = os.path.dirname(os.path.realpath(__file__))
-    filename = "nuevas_urls.csv"
-    file_path = os.path.join(directory,'csv/', filename)
+    directory = os.path.dirname(__file__)
+    filename = "/nuevas_urls.csv"
+    file_path = os.path.join(directory, filename)
     df_url = pd.read_csv(file_path, index_col=False)
 
 
@@ -783,9 +783,9 @@ def job():
     df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
 
     
-    directory = os.path.dirname(os.path.realpath(__file__))
-    filename = "nuevas_data.csv"
-    file_path = os.path.join(directory, 'csv/', filename)
+    directory = os.path.dirname(__file__)
+    filename = "/nuevas_data.csv"
+    file_path = os.path.join(directory, filename)
     # # Save to csv format to handle encoding
     df_nuevas_data.to_csv(file_path, index = False)
 
