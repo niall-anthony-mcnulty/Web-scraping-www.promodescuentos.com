@@ -1,5 +1,5 @@
 ## imports
-# coding=utf-8
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -144,7 +144,7 @@ def job():
     thumbs_up = []
 
     # count = 0
-    for urls in arr_url[0:10]:
+    for urls in arr_url[0:1]:
         
         try:
 
