@@ -17,7 +17,7 @@ import urllib
 import base64
 import os.path
 import schedule
-# from apikey import *
+from apikey import *
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition, ContentId)
 import pytz
@@ -799,32 +799,32 @@ def job():
     # ------------------------ Encode & Email with Scheduler ---------------------------- # 
 
 
-    # with open('nuevas_data.xlsx', 'rb') as f:
-    #     data = f.read()
-    #     f.close()
+    with open('csv/nuevas_data.csv', 'rb') as f:
+        data = f.read()
+        f.close()
 
-    # encoded = base64.b64encode(data).decode()
-    # message = Mail(
-    # from_email=FROM_EMAIL,
-    # to_emails=TO_EMAIL,
-    # subject='Your File is Ready',
-    # html_content='<strong>Attached is Your Scraped File</strong>')
-    # attachment = Attachment()
-    # attachment.file_content = FileContent(encoded)
-    # attachment.file_type = FileType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    # attachment.file_name = FileName('nuevas_data.xlsx')
-    # attachment.disposition = Disposition('attachment')
-    # attachment.content_id = ContentId('Example Content ID')
-    # message.attachment = attachment
+    encoded = base64.b64encode(data).decode()
+    message = Mail(
+    from_email=FROM_EMAIL,
+    to_emails=TO_EMAIL,
+    subject='Your File is Ready',
+    html_content='<strong>Attached is Your Scraped File</strong>')
+    attachment = Attachment()
+    attachment.file_content = FileContent(encoded)
+    attachment.file_type = FileType('text/csv')
+    attachment.file_name = FileName('nuevas_data.xlsx')
+    attachment.disposition = Disposition('attachment')
+    attachment.content_id = ContentId('Example Content ID')
+    message.attachment = attachment
 
-    # try:
-    #     sg = SendGridAPIClient(SENDGRID_API_KEY)
-    #     response = sg.send(message)
-    #     print(response.status_code)
-    #     print(response.body)
-    #     print(response.headers)
-    # except Exception as e:
-    #         print(e)
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+            print(e)
 
 
 schedule.every(5).minutes.do(job)
