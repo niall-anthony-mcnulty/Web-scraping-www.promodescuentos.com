@@ -111,7 +111,7 @@ def job():
 
 
     # create a list of URLS to iterate over
-    arr_url = ['https://www.promodescuentos.com/ofertas/over-ear-hifi-h1707-1more-663899']
+    arr_url = [ x for x in df_url['urls']]
     
 
     # ------------------------------ Run Scraper ---------------------------------------- #
@@ -144,7 +144,7 @@ def job():
     thumbs_up = []
 
     # count = 0
-    for urls in arr_url:
+    for urls in arr_url[0:50]:
         print(urls)
         
         try:
@@ -171,9 +171,8 @@ def job():
             # driver.get(urls)
 
             r = driver.page_source
-            print(r)
             soup = BeautifulSoup(r, 'html.parser')
-            print('YES')
+
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
 
