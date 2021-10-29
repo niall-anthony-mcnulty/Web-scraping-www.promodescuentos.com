@@ -151,13 +151,12 @@ def job():
             ## ------- Remote Driver --------###
             # add headless mode
             options = Options()
-            # options.binary_location = os.getenv('GOOGLE_CHROME_BIN')
-            # s=Service(os.environ.get("CHROMEDRIVER_PATH"))
-            options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+            options.binary_location = os.getenv('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
             options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--no-sandbox") # Bypass OS security model
-            driver = webdriver.Chrome(executable_path= os.environ.get('CHROMEDRIVER_PATH'), options=options)
+            s=Service(os.getenv("CHROMEDRIVER_PATH"))
+            driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
 
             # ## ------- Local Driver --------###
@@ -772,14 +771,17 @@ def job():
 
 
     # fix date
-    df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_correction)
-
+    try:
+        df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_correction)
+    
     # translate month
-    df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(month_translation)
+        df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(month_translation)
 
     # apply datetime format
-    df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
-
+        df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
+    except:
+        print('could not convert data')
+    
     
     directory = os.path.dirname(__file__)
     filename = "csv/nuevas_data.csv"
