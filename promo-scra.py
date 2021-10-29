@@ -111,7 +111,7 @@ def job():
 
 
     # create a list of URLS to iterate over
-    arr_url = ['https://www.promodescuentos.com/nuevas']
+    arr_url = ['https://www.promodescuentos.com/ofertas/over-ear-hifi-h1707-1more-663899']
     
 
     # ------------------------------ Run Scraper ---------------------------------------- #
@@ -151,13 +151,13 @@ def job():
 
             ## ------- Remote Driver --------###
             # add headless mode
-            options = Options()
+            options = webdriver.ChromeOptions()
             options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-            # options.add_argument("--headless") # Runs Chrome in headless mode.
-            # # options.add_argument("--disable-dev-shm-usage")
-            # options.add_argument("--disable-gpu")
-            # options.add_argument("--no-sandbox") # Bypass OS security model
-            s=Service(str(os.environ.get("CHROMEDRIVER_PATH")))
+            options.add_argument("--headless") # Runs Chrome in headless mode.
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            options.add_argument("--no-sandbox") # Bypass OS security model
+            s=Service(os.environ.get("CHROMEDRIVER_PATH"))
             driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
 
@@ -171,6 +171,7 @@ def job():
             # driver.get(urls)
 
             r = driver.page_source
+            print(r)
             soup = BeautifulSoup(r, 'html.parser')
             print('YES')
         #--------------------------------------------------------------------------------------------------------------------#   
