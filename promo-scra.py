@@ -111,7 +111,8 @@ def job():
 
 
     # create a list of URLS to iterate over
-    arr_url = [ x for x in df_url['urls']]
+    arr_url = ['https://www.promodescuentos.com/nuevas']
+    
 
     # ------------------------------ Run Scraper ---------------------------------------- #
     # ----------------------------------------------------------------------------------- #
@@ -119,64 +120,678 @@ def job():
 
     #lists will become columns in dataframe
 
-    # each_url_degrees = []
-    # each_url_product = []
-    # each_url_final_price = []
-    # each_url_original_price = []
-    # each_url_free_shipping = []
-    # each_url_merchant = []
-    # each_url_username = []
-    # each_url_date = []
-    # each_url_origin = []
-    # url = []
-    # each_url_category_1 = []
-    # each_url_category_2 = []
-    # each_url_category_3 = []
-    # each_url_category_4 = []
-    # each_url_category_5 = []
-    # each_url_category_6 = []
-    # each_url_category_7 = []
-    # each_url_category_8 = []
-    # each_url_category_9 = []
-    # top_comment_user = []
-    # top_comment = []
-    # thumbs_up = []
+    each_url_degrees = []
+    each_url_product = []
+    each_url_final_price = []
+    each_url_original_price = []
+    each_url_free_shipping = []
+    each_url_merchant = []
+    each_url_username = []
+    each_url_date = []
+    each_url_origin = []
+    url = []
+    each_url_category_1 = []
+    each_url_category_2 = []
+    each_url_category_3 = []
+    each_url_category_4 = []
+    each_url_category_5 = []
+    each_url_category_6 = []
+    each_url_category_7 = []
+    each_url_category_8 = []
+    each_url_category_9 = []
+    top_comment_user = []
+    top_comment = []
+    thumbs_up = []
 
     # count = 0
-    for urls in arr_url[0:10]:
+    for urls in arr_url:
         print(urls)
         
-        
+        try:
 
-        ## ------- Remote Driver --------###
-        # add headless mode
-        options = Options()
-        options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-        # options.add_argument("--headless") # Runs Chrome in headless mode.
-        # # options.add_argument("--disable-dev-shm-usage")
-        # options.add_argument("--disable-gpu")
-        # options.add_argument("--no-sandbox") # Bypass OS security model
-        s=Service(str(os.environ.get("CHROMEDRIVER_PATH")))
-        driver = webdriver.Chrome(service=s, options=options)
-        driver.get(urls)
+            ## ------- Remote Driver --------###
+            # add headless mode
+            options = Options()
+            options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+            # options.add_argument("--headless") # Runs Chrome in headless mode.
+            # # options.add_argument("--disable-dev-shm-usage")
+            # options.add_argument("--disable-gpu")
+            # options.add_argument("--no-sandbox") # Bypass OS security model
+            s=Service(str(os.environ.get("CHROMEDRIVER_PATH")))
+            driver = webdriver.Chrome(service=s, options=options)
+            driver.get(urls)
 
-        # ## ------- Local Driver --------###
-        # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
-        # # add headless mode
-        # options = Options()
-        # options.add_argument("--headless") # Runs Chrome in headless mode.
-        # options.add_argument('--no-sandbox') # Bypass OS security model
-        # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
-        # driver.get(urls)
+            # ## ------- Local Driver --------###
+            # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
+            # # add headless mode
+            # options = Options()
+            # options.add_argument("--headless") # Runs Chrome in headless mode.
+            # options.add_argument('--no-sandbox') # Bypass OS security model
+            # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            # driver.get(urls)
 
-        r = driver.page_source
-        print(r)
-        #soup = BeautifulSoup(r, 'html.parser')
-
+            r = driver.page_source
+            soup = BeautifulSoup(r, 'html.parser')
+            print('YES')
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
 
+            try:
+                url.append(urls)
+            except:
+                url.append(None)
+
+
+
+
+        #--------------------------------------------------------------------------------------------------------------------#              
+        #loop through URLS and obtain degree integer  
+            try:
+                degrees = soup.find('div',{'class' : "cept-vote-box"}).text
+                degrees = re.sub('[^-?0-9]', '', degrees)
+                # return only digits
+                each_url_degrees.append(int(degrees))
+            except:
+                each_url_degrees.append(None)
+
+        #--------------------------------------------------------------------------------------------------------------------#    
+        #loop through URLS and obtain product data
+
+
+            try:
+                product = soup.find('span',{'class' : "thread-title--item"}).text
+                each_url_product.append(product)
+            except:
+                each_url_product.append(None)
+
+
+        #--------------------------------------------------------------------------------------------------------------------#
+        # loop through URLS and obtain final price
+
+
+            try:
+                final_price = soup.find('span',{'class' : "cept-tp"}).text
+                substring = 'GRATIS'
+                # check if final price is GRATIS - return 0 if so
+                if substring in final_price:
+                    each_url_final_price.append(0)
+                else:
+                    # return only digits (take out special characters to ensure int datatype)
+                    final_price = re.sub('[^0-9]', '', final_price)
+                    each_url_final_price.append(int(final_price))
+            except:
+                each_url_final_price.append(None)
+
+
+        #--------------------------------------------------------------------------------------------------------------------#
+
+        # loop through URLS and obtain original price
+
+
+            try:
+                original_price = soup.find('span',{'class' : "cept-next-best-price"}).text
+                original_price = re.sub('[^0-9]', '', original_price)
+                each_url_original_price.append(int(original_price))
+            except:
+                each_url_original_price.append(None)
+
+
+        #--------------------------------------------------------------------------------------------------------------------#
+        # loop through URLS and obtain free shipping
+
+
+
+
+            try1 = soup.find('span',{'class' : "cept-shipping-price"})
+            try2 = soup.find('span',{'class' : "cept-tp"})
+            try3 = soup.find('div',{ 'class' : 'threadItem-title'})
+            try4 = soup.find('span',{'class' : 'overflow--fade'})
+            try5 = soup.find('span',{'class' : 'text--color-greyShade'})
+
+            # check for envio gratis and return true
+            substring1 = 'Envio gratis'
+            try:
+
+                if (try1 is not None) and (substring1 in try1.text):
+                # append to list
+                    each_url_free_shipping.append(True)
+                elif (try2 is not None) and (substring1 in try2.text):
+                    each_url_free_shipping.append(True) 
+                elif (try3 is not None) and (substring1 in try3.text):
+                    each_url_free_shipping.append(True)
+                elif (try4 is not None) and (substring1 in try4.text):
+                    each_url_free_shipping.append(True)
+                elif (try5 is not None) and (substring1 in try5.text):
+                    each_url_free_shipping.append(True)
+                else:
+                    each_url_free_shipping.append(False)
+
+            except:
+                each_url_free_shipping.append(False)
+
+        #--------------------------------------------------------------------------------------------------------------------#
+        # loop through URLS and obtain merchant
+
+
+
+            try:
+                merchant = soup.find('span',{'class' : "cept-merchant-name"}).text
+                merchant = re.sub('[\s*$]', '', merchant)
+
+
+                each_url_merchant.append(merchant)
+            except:
+                each_url_merchant.append(None)
+
+
+
+        #--------------------------------------------------------------------------------------------------------------------#
+
+
+        # loop through URLS and obtain usernames
+
+
+            try:
+                username = soup.find('span',{'class' : "thread-username"}).text
+                username = re.sub('[\s*$]', '', username)
+                each_url_username.append(username)
+            except:
+                each_url_username.append(None)
+
+
+
+        #--------------------------------------------------------------------------------------------------------------------#
+
+
+            # loop through URLS and obtain date
+
+            try:
             
+                # check for post date 
+                dates = soup.find_all('span',{'class' : "flex--toW3 overflow--wrap-off text--color-greyShade"})
+                
+                if len(dates) == 0:
+                    # check for publication
+                    pubs = soup.find('span', {'class' :'flex--toW3 overflow--wrap-off text--color-greyShade text--b'})
+                    # if no publication date add None to the dates list/array
+                    if len(pubs) == 0:
+                        each_url_date.append(None)
+                        # if there is a publication date
+                    else:
+                        # return the date inside the brackets using regex and add to the dates list/array
+                        pub_date = pubs.find('span', {'class' :'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                        regex = re.findall('\((.*)\)', pub_date)
+                        pub_date = regex[0]
+                        pub_date = re.sub('(Publicado)', '', pub_date)
+
+                        # check for string year
+                        substring_year = '20'
+                        # current year
+                        current_year = str(datetime.datetime.now().year)
+                        # if it does have the year, don't append 
+                        if substring_year in pub_date:
+                            pub_date = re.sub('^[ \t]+', '', pub_date)
+                            each_url_date.append(pub_date)
+                        else:
+                            # if it does, concatenate year
+                            pub_date = re.sub('^[ \t]+', '', pub_date) + ' ' +  current_year
+                            each_url_date.append(pub_date)
+
+
+                elif soup.find('span', {'class' :'flex--toW3 overflow--wrap-off text--color-greyShade text--b'}):
+                    pubs = soup.find('span', {'class' :'flex--toW3 overflow--wrap-off text--color-greyShade text--b'})
+
+                    # if no publication date add None to the dates list/array
+                    if len(pubs) == 0:
+                        each_url_date.append(None)
+                        # if there is a publication date
+                    else:
+                        # return the date inside the brackets using regex and add to the dates list/array
+                        pub_date = pubs.find('span', {'class' :'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                        regex = re.findall('\((.*)\)', pub_date)
+                        pub_date = regex[0]
+                        pub_date = re.sub('(Publicado)', '', pub_date)
+
+                        # check for string year
+                        substring_year = '20'
+                        # current year
+                        current_year = str(datetime.datetime.now().year)
+                        # if it does have the year, don't append 
+                        if substring_year in pub_date:
+                            pub_date = re.sub('^[ \t]+', '', pub_date)
+                            each_url_date.append(pub_date)
+                        else:
+                            # if it does, concatenate year
+                            pub_date = re.sub('^[ \t]+', '', pub_date) + ' ' + current_year
+                            each_url_date.append(pub_date)
+
+
+
+                else:
+                    # loop through the classes
+                    for normal_date in dates:
+                    # check for clock icon
+                        if normal_date.find('svg',{'class':'icon icon--clock text--color-greyShade'}):
+                        # return value
+                            url_date = normal_date.find('span',{'class':'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                            url_date = re.sub('\((.*)\)', '', url_date)
+                            url_date = url_date.rstrip()
+                            each_url_date.append(url_date)
+
+
+
+            except:
+                each_url_date.append(None)
+
+
+
+        #--------------------------------------------------------------------------------------------------------------------#    
+
+            #obtain origin 
+
+            
+            try:
+                elements = soup.find_all('span',{'class' : 'flex--toW3 overflow--wrap-off text--color-greyShade'})
+        
+                # temporary list
+                temp_origin_list = []
+                # counter
+                count = 0
+                while count < len(elements):
+
+                    # loop html elements in elements variable
+                    for origins in elements:
+
+                        # check for icon, return text and increment count
+                        if origins.find('svg',{'class' : 'icon--world'}):
+                            icon_text = origins.find('span',{'class' : 'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                            # return value if it is there and clean string with regex
+                            icon_text = re.sub('(Se envía de )', '', icon_text)
+                            if len(temp_origin_list) == 0:
+                                temp_origin_list.append(icon_text)
+                            else:
+                                if len(temp_origin_list) == 1:
+                                    continue
+
+                            count += 1
+
+                        # check for icon, return text and increment count
+                        elif origins.find('svg',{'class' : 'icon--location'}):
+                            icon_text = origins.find('span',{'class' : 'space--fromW3-ml-1 size--all-s space--t-2 space--fromW3-t-0 overflow--wrap-on space--fromW3-r-2'}).text
+                            # return value if it is there and clean string with regex
+                            icon_text = re.sub('(Se envía de )', '', icon_text)
+                            if len(temp_origin_list) == 0:
+                                temp_origin_list.append(icon_text)
+                            else:
+                                if len(temp_origin_list) == 1:
+                                    continue
+
+
+                            count += 1
+
+                        else:
+                            count += 1
+                # if the list is empty, append None to ensure df array lengths match  
+                if len(temp_origin_list) == 0:
+                    temp_origin_list.append(None)
+                # Append temporary list input to 'each_url_origin list' (should be len(1))
+                for item in temp_origin_list:
+                    each_url_origin.append(item)
+            
+            except:
+                each_url_origin.append(None)
+
+
+        #--------------------------------------------------------------------------------------------------------------------#   
+
+
+            # check for categories
+            categories = soup.find_all("a",{"class" : "text--b linkPlain cept-thread-group-name thread-link mute--text space--mr-3"})
+            try:
+
+                tags = []
+                for category in categories:
+                    tags.append(category.text)
+
+                if len(tags) == 0:
+
+                    each_url_category_1.append(None)
+                    each_url_category_2.append(None)
+                    each_url_category_3.append(None)
+                    each_url_category_4.append(None)
+                    each_url_category_5.append(None)
+                    each_url_category_6.append(None)
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+                if len(tags) == 1:
+
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(None)
+                    each_url_category_3.append(None)
+                    each_url_category_4.append(None)
+                    each_url_category_5.append(None)
+                    each_url_category_6.append(None)
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 2:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(None)
+                    each_url_category_4.append(None)
+                    each_url_category_5.append(None)
+                    each_url_category_6.append(None)
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 3:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(None)
+                    each_url_category_5.append(None)
+                    each_url_category_6.append(None)
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 4:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(tags[3])
+                    each_url_category_5.append(None)
+                    each_url_category_6.append(None)
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 5:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(tags[3])
+                    each_url_category_5.append(tags[4])
+                    each_url_category_6.append(None)
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 6:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(tags[3])
+                    each_url_category_5.append(tags[4])
+                    each_url_category_6.append(tags[5])
+                    each_url_category_7.append(None)
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 7:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(tags[3])
+                    each_url_category_5.append(tags[4])
+                    each_url_category_6.append(tags[5])
+                    each_url_category_7.append(tags[6])
+                    each_url_category_8.append(None)
+                    each_url_category_9.append(None)
+
+
+                if len(tags) == 8:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(tags[3])
+                    each_url_category_5.append(tags[4])
+                    each_url_category_6.append(tags[5])
+                    each_url_category_7.append(tags[6])
+                    each_url_category_8.append(tags[7])
+                    each_url_category_9.append(None)
+
+
+                # in case any posts have more than 9 tags/categories
+                if len(tags) >= 9:
+                    each_url_category_1.append(tags[0])
+                    each_url_category_2.append(tags[1])
+                    each_url_category_3.append(tags[2])
+                    each_url_category_4.append(tags[3])
+                    each_url_category_5.append(tags[4])
+                    each_url_category_6.append(tags[5])
+                    each_url_category_7.append(tags[6])
+                    each_url_category_8.append(tags[7])
+                    each_url_category_9.append(tags[8])
+
+            except:
+                each_url_category_1.append(None)
+                each_url_category_2.append(None)
+                each_url_category_3.append(None)
+                each_url_category_4.append(None)
+                each_url_category_5.append(None)
+                each_url_category_6.append(None)
+                each_url_category_7.append(None)
+                each_url_category_8.append(None)
+                each_url_category_9.append(None)
+                
+    #--------------------------------------------------------------------------------------------------------------------#   
+
+            # check for top comment, username and thumbs up
+            try:
+                
+                if soup.find_all('span',{'class':'lbox--v-3 space--l-2 size--all-m size--fromW2-l text--b'}):
+                    find_comments = soup.find_all('span',{'class':'lbox--v-3 space--l-2 size--all-m size--fromW2-l text--b'})
+                    for elements in find_comments:
+                        # check for top comments
+                        if 'Mejores comentarios' in elements.text:
+                            # if there is, find the username (first matching element) and append to list
+                            if soup.find('span',{'class': 'userInfo-username'}).text:
+                                user_name = soup.find('span',{'class': 'userInfo-username'}).text
+                                top_comment_user.append(user_name)
+                            else:
+                                top_comment_user.appned(None)
+
+                            # check for thumbs up amount and append to list
+                            if soup.find('span', {'class': 'comment-like'}).text:
+                                thumbs_up_count = soup.find('span', {'class': 'comment-like'}).text
+                                thumbs_up.append(thumbs_up_count)
+                            else:
+                                thumbs_up.append(None)
+
+
+                            # check for the parent div for comments
+                            if soup.find('div',{'class':'commentList-item'}):
+                                # assign it to a variable
+                                parent = soup.find('div',{'class':'commentList-item'})
+                                # check for top comment(first entry)
+                                if parent.find('div',{'class':'comment-body'}):
+                                    # grab text
+                                    comment_text = parent.find('div',{'class':'comment-body'}).text
+                                    # if there is no text, it is assumed to be a graphic or image
+                                    if comment_text == '':
+                                        top_comment.append('Graphic instead of text (image/meme)')
+                                        # append text if there is
+                                    else:
+                                        top_comment.append(comment_text)
+                            else:
+                                top_comment.append(None)
+
+
+                        else:
+                            top_comment.append(None)
+
+                else:
+                    top_comment_user.append(None)
+                    top_comment.append(None)
+                    thumbs_up.append(None)
+                
+            except:
+                top_comment_user.append(None)
+                top_comment.append(None)
+                thumbs_up.append(None)
+                
+                
+    #--------------------------------------------------------------------------------------------------------------------#   
+                
+
+        except:
+            each_url_degrees.append(None)
+            each_url_product.append(None)
+            each_url_final_price.append(None)
+            each_url_original_price.append(None)
+            each_url_free_shipping.append(None)
+            each_url_merchant.append(None)
+            each_url_username.append(None)
+            each_url_date.append(None)
+            each_url_origin.append(None)
+            url.append(None)
+            each_url_category_1.append(None)
+            each_url_category_2.append(None)
+            each_url_category_3.append(None)
+            each_url_category_4.append(None)
+            each_url_category_5.append(None)
+            each_url_category_6.append(None)
+            each_url_category_7.append(None)
+            each_url_category_8.append(None)
+            each_url_category_9.append(None)
+            top_comment_user.append(None)
+            top_comment.append(None)
+            thumbs_up.append(None)
+                
+            
+    #      # Save csv after every 500 iterations  
+    #     if(count%500==0):
+    #         data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
+    #         df_nuevas_data = pd.DataFrame.from_dict(data_dict)
+    #         df_nuevas_data.to_csv("/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/nuevas_data.csv", index = False)
+    #     count += 1
+        
+
+    # # Save complete file
+    
+    data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
+    df_nuevas_data = pd.DataFrame.from_dict(data_dict)
+    df_nuevas_data.to_csv("csv/nuevas_data.csv", index = False)
+                                                    
+    # ------------------------------- Clean Data ---------------------------------------- #
+    # ----------------------------------------------------------------------------------- #
+                                                    
+    # df_nuevas_data = df_nuevas_data['Date'].astype(str)
+    # df_nuevas_data['Free_Shipping'] = df_nuevas_data['Free_Shipping'].astype(bool)                                                
+                                                
+    # ----------------------------------------------------------------------------------- #
+    # ------------------------------- Adjust Date String -------------------------------- #                                                  
+    def date_correction(col):
+
+        substring_double_year = '2020 2021'
+        # check for substring
+        if substring_double_year in str(col):
+            # split the string
+            split_column_values = str(col).split(" ")
+            # empty string
+            date_1_new = ''
+            
+            # set a counter
+            count = 0
+            # loop through list elements
+            for x in split_column_values:
+                if count == 3:
+                    break
+                # concatenate strings together - except for the last element
+                else:
+                    date_1_new += (str(x) + ' ')
+                    count += 1
+
+            # split the string to erase weird symbol
+            date_2_new = date_1_new.split("º.")
+            # join them back together
+            date_2_new = ",".join(date_2_new)
+            # return without trailing white space
+            return date_2_new.rstrip()
+            
+        else:
+            # split the string to erase weird symbol
+            new_date =  str(col).split("º.")
+            # join them back together
+            new_date_2 = ",".join(new_date)
+            # return without trailing white space
+            return new_date_2.rstrip()
+                                                        
+
+    # ----------------------------------------------------------------------------------- #
+    # ---------------------------- Translate Month Sring -------------------------------- # 
+    def month_translation(col):
+        if 'ene' in col:
+            return col.replace('ene','January')
+        elif 'feb' in col:
+            return col.replace('feb','February')
+        elif 'mar' in col:
+            return col.replace('mar','March')
+        elif 'abr' in col:
+            return col.replace('abr','April')
+        elif 'may' in col:
+            return col.replace('may', 'May')
+        elif 'jun' in col:
+            return col.replace('jun','June')
+        elif 'jul' in col:
+            return col.replace('jul','July')
+        elif 'ago' in col:
+            return col.replace('ago','August')
+        elif 'sep' in col:
+            return col.replace('sep','September')
+        elif 'oct' in col:
+            return col.replace('oct', 'October')
+        elif 'nov' in col:
+            return col.replace('nov','November')
+        elif 'dic' in col:
+            return col.replace('dic','December')
+        else:
+            return col
+
+
+    # ----------------------------------------------------------------------------------- #
+    # ------------------------ Change String to Datetime -------------------------------- # 
+    def date_time(col):
+        try:
+            return datetime.strptime(col, "%B %d, %Y")
+        except:
+            return pd.NaT
+
+    # ----------------------------------------------------------------------------------- #
+    # ------------------------ Call Functions & Save to Excel --------------------------- # 
+
+
+    # fix date
+    try:
+        df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_correction)
+    
+    # translate month
+        df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(month_translation)
+
+    # apply datetime format
+        df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
+    except:
+        print('could not convert data')
+    
+    
+    directory = os.path.dirname(os.path.realpath(__file__))
+    filename = "nuevas_data.csv"
+    file_path = os.path.join(directory,'csv/', filename)
+    # # Save to csv format to handle encoding
+    df_nuevas_data.to_csv(file_path, index = False)
+
+    print(df_nuevas_data)
     
 
 
