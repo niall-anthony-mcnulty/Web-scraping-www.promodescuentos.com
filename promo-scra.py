@@ -169,8 +169,8 @@ def job():
             # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
             # driver.get(urls)
 
-            # r = driver.page_source
-            # soup = BeautifulSoup(r, 'html.parser')
+            r = driver.page_source
+            soup = BeautifulSoup(r, 'html.parser')
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
