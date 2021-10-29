@@ -24,7 +24,6 @@ import pytz
 import openpyxl
 import os
 
-# -*- coding: utf-8 -*-
 # ---------------------- loop through website for individual URLS ------------------- #
 # ----------------------------------------------------------------------------------- #
 
@@ -150,24 +149,24 @@ def job():
 
             ### ------- Remote Driver --------###
             # add headless mode
-            options = Options()
-            s=Service(os.environ.get("CHROMEDRIVER_PATH"))
-            options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-            options.add_argument("--headless") # Runs Chrome in headless mode.
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--no-sandbox") # Bypass OS security model
-           
-            driver = webdriver.Chrome(service=s, options=options)
-            driver.get(urls)
-
-            ### ------- Local Driver --------###
-            # DRIVER_PATH = 'chromedriver'
-            # # add headless mode
             # options = Options()
+            # s=Service(os.environ.get("CHROMEDRIVER_PATH"))
+            # options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             # options.add_argument("--headless") # Runs Chrome in headless mode.
-            # options.add_argument('--no-sandbox') # Bypass OS security model
-            # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            # options.add_argument("--disable-dev-shm-usage")
+            # options.add_argument("--no-sandbox") # Bypass OS security model
+           
+            # driver = webdriver.Chrome(service=s, options=options)
             # driver.get(urls)
+
+            ## ------- Local Driver --------###
+            DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
+            # add headless mode
+            options = Options()
+            options.add_argument("--headless") # Runs Chrome in headless mode.
+            options.add_argument('--no-sandbox') # Bypass OS security model
+            driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            driver.get(urls)
 
             r = driver.page_source
             soup = BeautifulSoup(r, 'html.parser')
@@ -680,7 +679,7 @@ def job():
     # # Save complete file
     data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
     df_nuevas_data = pd.DataFrame.from_dict(data_dict)
-    df_nuevas_data.to_csv("nuevas_data.csv", index = False)
+    # df_nuevas_data.to_csv("nuevas_data.csv", index = False)
                                                     
     # ------------------------------- Clean Data ---------------------------------------- #
     # ----------------------------------------------------------------------------------- #
@@ -818,18 +817,18 @@ def job():
     #         print(e)
 
 
-schedule.every(5).minutes.do(job)
-# # # schedule.every().hour.do(job)
-# # # schedule.every().day.at('13:58').do(job)
-# # # schedule.every(5).to(10).minutes.do(job)
-# # # schedule.every().monday.do(job)
-# # # schedule.every().thursday.at("17:24").do(job)
-# # # schedule.every().minute.at(":17").do(job)
+# schedule.every(5).minutes.do(job)
+# # # # schedule.every().hour.do(job)
+# # # # schedule.every().day.at('13:58').do(job)
+# # # # schedule.every(5).to(10).minutes.do(job)
+# # # # schedule.every().monday.do(job)
+# # # # schedule.every().thursday.at("17:24").do(job)
+# # # # schedule.every().minute.at(":17").do(job)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1) # wait one minute
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1) # wait one minute
 
 
-
+job()
 
