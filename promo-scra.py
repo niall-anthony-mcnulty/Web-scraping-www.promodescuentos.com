@@ -17,7 +17,7 @@ import urllib
 import base64
 import os.path
 import schedule
-from apikey import *
+# from apikey import *
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, FileType, Disposition, ContentId)
 import pytz
