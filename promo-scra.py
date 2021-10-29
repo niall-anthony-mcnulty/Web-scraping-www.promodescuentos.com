@@ -818,6 +818,6 @@ while True:
     schedule.run_pending()
     time.sleep(1) # wait one minute
 
-job()
+
 
 
