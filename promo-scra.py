@@ -144,11 +144,11 @@ def job():
     thumbs_up = []
 
     # count = 0
-    for urls in arr_url[0:1]:
+    for urls in arr_url[0:10]:
         
         try:
 
-            
+            ### ------- Remote Driver --------###
             # add headless mode
             options = Options()
             s=Service(os.environ.get("CHROMEDRIVER_PATH"))
@@ -160,8 +160,18 @@ def job():
             driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
 
-            r = driver.page_source
-            soup = BeautifulSoup(r, 'html.parser')
+            ### ------- Local Driver --------###
+            # DRIVER_PATH = 'chromedriver'
+            # # add headless mode
+            # options = Options()
+            # options.add_argument("--headless") # Runs Chrome in headless mode.
+            # options.add_argument('--no-sandbox') # Bypass OS security model
+            # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            # driver.get(urls)
+
+            # r = driver.page_source
+            # soup = BeautifulSoup(r, 'html.parser')
+
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
 
@@ -238,7 +248,7 @@ def job():
             try5 = soup.find('span',{'class' : 'text--color-greyShade'})
 
             # check for envio gratis and return true
-            substring1 = 'Envío gratis'
+            substring1 = 'Envio gratis'
             try:
 
                 if (try1 is not None) and (substring1 in try1.text):
@@ -771,6 +781,8 @@ def job():
 
     # # Save to xlsx format to handle encoding
     df_nuevas_data.to_csv("nuevas_data.csv", index = False)
+
+    print(df_nuevas_data)
     
 
 
@@ -806,13 +818,13 @@ def job():
     #         print(e)
 
 
-schedule.every(2).minutes.do(job)
-# # schedule.every().hour.do(job)
-# # schedule.every().day.at('13:58').do(job)
-# # schedule.every(5).to(10).minutes.do(job)
-# # schedule.every().monday.do(job)
-# # schedule.every().thursday.at("17:24").do(job)
-# # schedule.every().minute.at(":17").do(job)
+schedule.every(5).minutes.do(job)
+# # # schedule.every().hour.do(job)
+# # # schedule.every().day.at('13:58').do(job)
+# # # schedule.every(5).to(10).minutes.do(job)
+# # # schedule.every().monday.do(job)
+# # # schedule.every().thursday.at("17:24").do(job)
+# # # schedule.every().minute.at(":17").do(job)
 
 while True:
     schedule.run_pending()
