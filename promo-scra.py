@@ -147,26 +147,26 @@ def job():
         
         try:
 
-            ### ------- Remote Driver --------###
-            # add headless mode
-            # options = Options()
-            # s=Service(os.environ.get("CHROMEDRIVER_PATH"))
-            # options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-            # options.add_argument("--headless") # Runs Chrome in headless mode.
-            # options.add_argument("--disable-dev-shm-usage")
-            # options.add_argument("--no-sandbox") # Bypass OS security model
-           
-            # driver = webdriver.Chrome(service=s, options=options)
-            # driver.get(urls)
-
-            ## ------- Local Driver --------###
-            DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
+            ## ------- Remote Driver --------###
             # add headless mode
             options = Options()
+            s=Service(os.environ.get("CHROMEDRIVER_PATH"))
+            options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
-            options.add_argument('--no-sandbox') # Bypass OS security model
-            driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--no-sandbox") # Bypass OS security model
+           
+            driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
+
+            # ## ------- Local Driver --------###
+            # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
+            # # add headless mode
+            # options = Options()
+            # options.add_argument("--headless") # Runs Chrome in headless mode.
+            # options.add_argument('--no-sandbox') # Bypass OS security model
+            # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            # driver.get(urls)
 
             r = driver.page_source
             soup = BeautifulSoup(r, 'html.parser')
@@ -817,7 +817,7 @@ def job():
     #         print(e)
 
 
-# schedule.every(5).minutes.do(job)
+schedule.every(5).minutes.do(job)
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('13:58').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
@@ -825,10 +825,9 @@ def job():
 # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # schedule.every().minute.at(":17").do(job)
 
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1) # wait one minute
+while True:
+    schedule.run_pending()
+    time.sleep(1) # wait one minute
 
 
-job()
 
