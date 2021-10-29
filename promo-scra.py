@@ -1,5 +1,5 @@
 ## imports
-
+# coding=utf-8
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -24,6 +24,7 @@ import pytz
 import openpyxl
 import os
 
+# -*- coding: utf-8 -*-
 # ---------------------- loop through website for individual URLS ------------------- #
 # ----------------------------------------------------------------------------------- #
 
@@ -805,19 +806,18 @@ def job():
     #         print(e)
 
 
-
 schedule.every(2).minutes.do(job)
-# schedule.every().hour.do(job)
-# schedule.every().day.at('13:58').do(job)
-# schedule.every(5).to(10).minutes.do(job)
-# schedule.every().monday.do(job)
-# schedule.every().thursday.at("17:24").do(job)
-# schedule.every().minute.at(":17").do(job)
+# # schedule.every().hour.do(job)
+# # schedule.every().day.at('13:58').do(job)
+# # schedule.every(5).to(10).minutes.do(job)
+# # schedule.every().monday.do(job)
+# # schedule.every().thursday.at("17:24").do(job)
+# # schedule.every().minute.at(":17").do(job)
 
 while True:
     schedule.run_pending()
-    time.sleep(0.1) # wait one minute
+    time.sleep(1) # wait one minute
 
-
+job()
 
 
