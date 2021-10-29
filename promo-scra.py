@@ -104,10 +104,10 @@ import os
 def job():
     #read in URL csv - Load in from your own directory
 
-    # directory = os.path.dirname(os.path.realpath(__file__))
-    # filename = "nuevas_urls.csv"
-    # file_path = os.path.join(directory,'Web-scraping-www.promodescuentos.com/', filename)
-    df_url = pd.read_csv('nuevas_urls.csv', index_col=False)
+    directory = os.path.dirname(os.path.realpath(__file__))
+    filename = "nuevas_urls.csv"
+    file_path = os.path.join(directory,'/csv', filename)
+    df_url = pd.read_csv(file_path, index_col=False)
 
 
     # create a list of URLS to iterate over
@@ -677,6 +677,7 @@ def job():
         
 
     # # Save complete file
+    
     data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
     df_nuevas_data = pd.DataFrame.from_dict(data_dict)
     # df_nuevas_data.to_csv("nuevas_data.csv", index = False)
@@ -778,8 +779,12 @@ def job():
     # apply datetime format
     df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
 
-    # # Save to xlsx format to handle encoding
-    df_nuevas_data.to_csv("nuevas_data.csv", index = False)
+    
+    directory = os.path.dirname(os.path.realpath(__file__))
+    filename = "nuevas_data.csv"
+    file_path = os.path.join(directory, '/csv', filename)
+    # # Save to csv format to handle encoding
+    df_nuevas_data.to_csv(file_path, index = False)
 
     print(df_nuevas_data)
     
