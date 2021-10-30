@@ -847,13 +847,13 @@ def job():
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('13:58').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().saturday.at('11:45').do(job)
+# schedule.every().saturday.at('11:45').do(job)
 # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # schedule.every().minute.at(":17").do(job)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1) # wait one minute
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1) # wait one minute
 
-
+job()
 
