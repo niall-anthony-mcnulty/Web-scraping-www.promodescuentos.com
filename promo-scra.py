@@ -793,20 +793,20 @@ def job():
     # # Save to csv format to handle encoding
     df_nuevas_data.to_csv(file_path)
 
+    
+    # save to git using PyGithub
     github = Github(os.environ.get('GIT_KEY'))
     repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
-
     #path in the repository
     filename = 'csv/new_data.csv'
     # content to write
-    content = df_nuevas_data
+    df = df_nuevas_data.to_csv(sep=',', index=False)
+    content = df
+    
 
     #create a commit message
     f = repository.create_file(filename, "create updated scraper csv", content)
-    # 
-
-
-
+    # Print on screen
     print(df_nuevas_data)
     
 
