@@ -23,6 +23,8 @@ from sendgrid.helpers.mail import (Mail, Attachment, FileContent, FileName, File
 import pytz
 import openpyxl
 import os
+from github import Github
+
 
 # ---------------------- loop through website for individual URLS ------------------- #
 # ----------------------------------------------------------------------------------- #
@@ -790,6 +792,20 @@ def job():
     file_path = os.path.join(directory, 'csv/', filename)
     # # Save to csv format to handle encoding
     df_nuevas_data.to_csv(file_path)
+
+    github = Github(str(GIT_KEY))
+    repository = github.get_user().get_repo('niall-anthony-mcnulty/Web-scraping-www.promodescuentos.com')
+
+    #path in the repository
+    filename = 'csv/new_data.csv'
+    # content to write
+    content = df_nuevas_data
+
+    #create a commit message
+    f = repository.create_file(filename, "create updated scraper csv", content)
+    # 
+
+
 
     print(df_nuevas_data)
     
