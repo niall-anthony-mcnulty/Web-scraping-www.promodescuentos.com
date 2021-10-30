@@ -682,7 +682,6 @@ def job():
     
     data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
     df_nuevas_data = pd.DataFrame.from_dict(data_dict)
-    df_nuevas_data.to_csv("csv/nuevas_data.csv", index = False)
                                                     
     # ------------------------------- Clean Data ---------------------------------------- #
     # ----------------------------------------------------------------------------------- #
@@ -784,12 +783,13 @@ def job():
     except:
         print('could not convert data')
     
-    
-    directory = os.path.dirname(__file__)
-    filename = "csv/nuevas_data.csv"
-    file_path = os.path.join(directory, filename)
+    df_nuevas_data += 1
+
+    directory = os.path.dirname(os.path.realpath(__file__))
+    filename = "nuevas_data.csv"
+    file_path = os.path.join(directory, 'csv/', filename)
     # # Save to csv format to handle encoding
-    df_nuevas_data.to_csv(file_path, index = False)
+    df_nuevas_data.to_csv(file_path)
 
     print(df_nuevas_data)
     
@@ -799,7 +799,7 @@ def job():
     # ------------------------ Encode & Email with Scheduler ---------------------------- # 
 
 
-    with open(filename, 'rb') as f:
+    with open(file_path, 'rb') as f:
         data = f.read()
         f.close()
 
