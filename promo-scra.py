@@ -671,6 +671,11 @@ def job():
             top_comment.append(None)
             thumbs_up.append(None)
                 
+        
+        
+        if  count % 500 == 0:
+            print('iterated over 500')
+            
             
     #      # Save csv after every 500 iterations  
     #     if(count%500==0):
