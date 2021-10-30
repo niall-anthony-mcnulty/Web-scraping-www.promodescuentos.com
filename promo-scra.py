@@ -783,7 +783,7 @@ def job():
     except:
         print('could not convert data')
     
-    df_nuevas_data += 1
+    df_nuevas_data.index += 1
 
     directory = os.path.dirname(os.path.realpath(__file__))
     filename = "nuevas_data.csv"
