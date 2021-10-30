@@ -794,7 +794,7 @@ def job():
     df_nuevas_data.to_csv(file_path)
 
     github = Github(str(os.environ.get(GIT_KEY)))
-    repository = github.get_user().get_repo('niall-anthony-mcnulty/Web-scraping-www.promodescuentos.com')
+    repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
 
     #path in the repository
     filename = 'csv/new_data.csv'

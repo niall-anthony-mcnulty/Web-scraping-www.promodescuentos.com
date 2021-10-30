@@ -21,3 +21,4 @@ apikey==0.2.4
 regex==2021.10.23
 datetime==4.3
 openpyxl==3.0.9
+PyGitHub==1.55
