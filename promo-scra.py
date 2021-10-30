@@ -145,8 +145,8 @@ def job():
     top_comment = []
     thumbs_up = []
 
-    # count = 0
-    for urls in arr_url[0:200]:
+    
+    for urls in arr_url[0:500]:
         
         
         try:
@@ -798,7 +798,7 @@ def job():
     github = Github(os.environ.get('GIT_KEY'))
     repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
     #path in the repository
-    filename = 'new_data.csv'
+    filename = 'new_data_2.csv'
     # content to write
     df = df_nuevas_data.to_csv(sep=',', index=False)
     content = df
@@ -843,7 +843,7 @@ def job():
     #         print(e)
 
 
-schedule.every(5).minutes.do(job)
+schedule.every(10).minutes.do(job)
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('13:58').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
