@@ -785,9 +785,9 @@ def job():
         print('could not convert data')
     
     
-    directory = os.path.dirname(os.path.realpath(__file__))
-    filename = "nuevas_data.csv"
-    file_path = os.path.join(directory,'csv/', filename)
+    directory = os.path.dirname(__file__)
+    filename = "csv/nuevas_data.csv"
+    file_path = os.path.join(directory, filename)
     # # Save to csv format to handle encoding
     df_nuevas_data.to_csv(file_path, index = False)
 
@@ -799,7 +799,7 @@ def job():
     # ------------------------ Encode & Email with Scheduler ---------------------------- # 
 
 
-    with open('csv/nuevas_data.csv', 'rb') as f:
+    with open(filename, 'rb') as f:
         data = f.read()
         f.close()
 
@@ -812,7 +812,7 @@ def job():
     attachment = Attachment()
     attachment.file_content = FileContent(encoded)
     attachment.file_type = FileType('text/csv')
-    attachment.file_name = FileName('nuevas_data.xlsx')
+    attachment.file_name = FileName('nuevas_data.csv')
     attachment.disposition = Disposition('attachment')
     attachment.content_id = ContentId('Example Content ID')
     message.attachment = attachment
