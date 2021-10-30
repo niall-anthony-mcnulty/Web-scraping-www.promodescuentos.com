@@ -145,7 +145,7 @@ def job():
     top_comment = []
     thumbs_up = []
 
-    
+    count = 0
     for urls in arr_url:
         
         
@@ -675,6 +675,9 @@ def job():
         
         if  count % 500 == 0:
             print('iterated over 500')
+        # add to count
+        count += 1
+
             
             
     #      # Save csv after every 500 iterations  
