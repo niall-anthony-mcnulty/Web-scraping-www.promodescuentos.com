@@ -798,7 +798,7 @@ def job():
     github = Github(os.environ.get('GIT_KEY'))
     repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
     #path in the repository
-    filename = 'csv/new_data.csv'
+    filename = 'new_data.csv'
     # content to write
     df = df_nuevas_data.to_csv(sep=',', index=False)
     content = df
