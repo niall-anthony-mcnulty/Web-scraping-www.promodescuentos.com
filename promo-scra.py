@@ -859,5 +859,4 @@ schedule.every().day.at('01:07').do(job)
 #     schedule.run_pending()
 #     time.sleep(1) # wait one minute
 
-job()
 
