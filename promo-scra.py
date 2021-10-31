@@ -849,7 +849,7 @@ def job():
 
 # # # # schedule.every(10).minutes.do(job)
 # # # # schedule.every().hour.do(job)
-schedule.every().day.at('01:42').do(job)
+schedule.every().day.at('01:57').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
 # schedule.every().saturday.at('11:45').do(job)
 # # # # schedule.every().thursday.at("17:24").do(job)
