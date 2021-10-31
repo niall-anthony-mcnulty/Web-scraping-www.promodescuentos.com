@@ -145,7 +145,7 @@ def job():
     top_comment = []
     thumbs_up = []
 
-    count = 0
+    count = 1
     for urls in arr_url:
         print(count, urls)
         count += 1
