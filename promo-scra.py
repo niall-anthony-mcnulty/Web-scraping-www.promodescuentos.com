@@ -147,7 +147,8 @@ def job():
 
     count = 0
     for urls in arr_url:
-        
+        print(count, urls)
+        count += 1
         
         try:
 
@@ -672,11 +673,6 @@ def job():
             thumbs_up.append(None)
                 
         
-        
-        if  count % 500 == 0:
-            print('iterated over 500')
-        # add to count
-        count += 1
 
             
             
@@ -853,7 +849,7 @@ def job():
 
 # # # # schedule.every(10).minutes.do(job)
 # # # # schedule.every().hour.do(job)
-# # # # schedule.every().day.at('13:58').do(job)
+schedule.every().day.at('01:07').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
 # schedule.every().saturday.at('11:45').do(job)
 # # # # schedule.every().thursday.at("17:24").do(job)
