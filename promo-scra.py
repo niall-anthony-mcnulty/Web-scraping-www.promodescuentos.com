@@ -147,7 +147,7 @@ def job():
 
     count_url = 1
     for urls in arr_url:
-        print(count_url+": "+urls)
+        print(str(count_url)+": "+str(urls))
         count_url += 1
         
         try:
