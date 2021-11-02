@@ -146,7 +146,7 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url:
+    for urls in arr_url[0:25000]:
         print(str(count_url)+": "+str(urls))
         count_url += 1
         
@@ -851,7 +851,7 @@ def job():
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('01:57').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().tuesday.at('00:20').do(job)
+schedule.every().tuesday.at('21:15').do(job)
 # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # schedule.every().minute.at(":17").do(job)
 
