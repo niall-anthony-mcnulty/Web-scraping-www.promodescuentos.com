@@ -147,7 +147,7 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url:
+    for urls in arr_url[10000:]:
         print(str(count_url)+": "+str(urls))
         count_url += 1
         
@@ -779,7 +779,7 @@ def job():
             github = Github(os.environ.get('GIT_KEY'))
             repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
             #path in the repository
-            filename = 'promodescuentos-nuevas-sixmonths.csv' +'count_url'
+            filename = 'promodescuentos-nuevas-sixmonths' + str(count_url) + '.csv'
             # content to write
             df = df_nuevas_data.to_csv(sep=',', index=False)
             content = df
@@ -969,7 +969,7 @@ def job():
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('01:57').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().wednesday.at('14:55').do(job)
+schedule.every().wednesday.at('22:30').do(job)
 # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # schedule.every().minute.at(":17").do(job)
 
