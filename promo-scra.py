@@ -26,6 +26,7 @@ import os
 from github import Github
 
 
+
 # ---------------------- loop through website for individual URLS ------------------- #
 # ----------------------------------------------------------------------------------- #
 
@@ -146,7 +147,7 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url[0:25000]:
+    for urls in arr_url:
         print(str(count_url)+": "+str(urls))
         count_url += 1
         
@@ -671,7 +672,124 @@ def job():
             top_comment_user.append(None)
             top_comment.append(None)
             thumbs_up.append(None)
-                
+
+        if (count_url % 10000) == 0:
+
+            def date_correction(col):
+
+                substring_double_year = '2020 2021'
+                # check for substring
+                if substring_double_year in str(col):
+                    # split the string
+                    split_column_values = str(col).split(" ")
+                    # empty string
+                    date_1_new = ''
+                    
+                    # set a counter
+                    count = 0
+                    # loop through list elements
+                    for x in split_column_values:
+                        if count == 3:
+                            break
+                        # concatenate strings together - except for the last element
+                        else:
+                            date_1_new += (str(x) + ' ')
+                            count += 1
+
+                    # split the string to erase weird symbol
+                    date_2_new = date_1_new.split("º.")
+                    # join them back together
+                    date_2_new = ",".join(date_2_new)
+                    # return without trailing white space
+                    return date_2_new.rstrip()
+                    
+                else:
+                    # split the string to erase weird symbol
+                    new_date =  str(col).split("º.")
+                    # join them back together
+                    new_date_2 = ",".join(new_date)
+                    # return without trailing white space
+                    return new_date_2.rstrip()
+                                                                
+
+                # ----------------------------------------------------------------------------------- #
+                # ---------------------------- Translate Month Sring -------------------------------- # 
+            def month_translation(col):
+                if 'ene' in col:
+                    return col.replace('ene','January')
+                elif 'feb' in col:
+                    return col.replace('feb','February')
+                elif 'mar' in col:
+                    return col.replace('mar','March')
+                elif 'abr' in col:
+                    return col.replace('abr','April')
+                elif 'may' in col:
+                    return col.replace('may', 'May')
+                elif 'jun' in col:
+                    return col.replace('jun','June')
+                elif 'jul' in col:
+                    return col.replace('jul','July')
+                elif 'ago' in col:
+                    return col.replace('ago','August')
+                elif 'sep' in col:
+                    return col.replace('sep','September')
+                elif 'oct' in col:
+                    return col.replace('oct', 'October')
+                elif 'nov' in col:
+                    return col.replace('nov','November')
+                elif 'dic' in col:
+                    return col.replace('dic','December')
+                else:
+                    return col
+
+
+            # ----------------------------------------------------------------------------------- #
+            # ------------------------ Change String to Datetime -------------------------------- # 
+            def date_time(col):
+                try:
+                    return datetime.strptime(col, "%B %d, %Y")
+                except:
+                    return pd.NaT
+
+
+            data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
+            df_nuevas_data = pd.DataFrame.from_dict(data_dict)
+
+            try:
+                df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_correction)
+            
+                # translate month
+                df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(month_translation)
+
+                # apply datetime format
+                df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
+            except:
+                print('could not convert data')
+
+            df_nuevas_data.index += 1
+
+            directory = os.path.dirname(os.path.realpath(__file__))
+            filename = "nuevas_data.csv"
+            file_path = os.path.join(directory, 'csv/', filename)
+            # # Save to csv format to handle encoding
+            df_nuevas_data.to_csv(file_path)
+
+            
+            # save to git using PyGithub
+            github = Github(os.environ.get('GIT_KEY'))
+            repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
+            #path in the repository
+            filename = 'promodescuentos-nuevas-sixmonths.csv' +'count_url'
+            # content to write
+            df = df_nuevas_data.to_csv(sep=',', index=False)
+            content = df
+        
+
+            #create a commit message
+            f = repository.create_file(filename, "create updated scraper csv", content)
+            # Print on screen
+            print(df_nuevas_data)
+                    
         
 
             
@@ -851,7 +969,7 @@ def job():
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('01:57').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().tuesday.at('21:15').do(job)
+schedule.every().wednesday.at('14:50').do(job)
 # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # schedule.every().minute.at(":17").do(job)
 
