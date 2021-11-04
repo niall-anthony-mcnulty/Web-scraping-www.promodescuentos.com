@@ -117,7 +117,7 @@ def job():
 
     # create a list of URLS to iterate over
     arr_url = [ x for x in df_url['urls']]
-    
+
 
     # ------------------------------ Run Scraper ---------------------------------------- #
     # ----------------------------------------------------------------------------------- #
@@ -149,9 +149,10 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url[0:100]:
-        print(str(count_url)+": "+str(urls))
+    start = time.time()
+    for urls in arr_url:
         count_url += 1
+
         
         try:
 
@@ -167,7 +168,7 @@ def job():
             driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
 
-            # ## ------- Local Driver --------###
+            ## ------- Local Driver --------###
             # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
             # # add headless mode
             # options = webdriver.ChromeOptions()
@@ -678,7 +679,11 @@ def job():
             top_comment.append(None)
             thumbs_up.append(None)
 
-        if (count_url % 5000) == 0:
+        if (count_url % 1000) == 0:
+            
+            finish = time.time()-start
+            finish_mins = finish / 60
+            print(finish_mins)
 
             def date_correction(col):
 
@@ -773,6 +778,9 @@ def job():
 
             df_nuevas_data.index += 1
 
+            # df_nuevas_data.to_csv('promodescuentos-nuevas-sixmonths' + str(count_url) + '.csv')
+            # df_nuevas_data.to_excel('promodescuentos-nuevas-sixmonths' + str(count_url) + '.xlsx', encoding='utf-8')
+
             directory = os.path.dirname(os.path.realpath(__file__))
             filename = "nuevas_data.csv"
             file_path = os.path.join(directory, 'csv/', filename)
@@ -793,15 +801,15 @@ def job():
             #create a commit message
             f = repository.create_file(filename, "create updated scraper csv", content)
             
-           
+            
                     
         
 
             
-    
+
 
     # # Save complete file
-    
+
     data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
     df_nuevas_data = pd.DataFrame.from_dict(data_dict)
                                                     
@@ -896,7 +904,7 @@ def job():
     # fix date
     try:
         df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_correction)
-    
+
     # translate month
         df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(month_translation)
 
@@ -904,17 +912,17 @@ def job():
         df_nuevas_data['Date'] = df_nuevas_data['Date'].apply(date_time)
     except:
         print('could not convert data')
-    
+
     df_nuevas_data.index += 1
 
-    
+
     directory = os.path.dirname(os.path.realpath(__file__))
     filename = "nuevas_data.csv"
     file_path = os.path.join(directory, 'csv/', filename)
     # # Save to csv format to handle encoding
     df_nuevas_data.to_csv(file_path)
 
-    
+
     # save to git using PyGithub
     github = Github(os.environ.get('GIT_KEY'))
     repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
@@ -923,57 +931,59 @@ def job():
     # content to write
     df = df_nuevas_data.to_csv(sep=',', index=False)
     content = df
-    
+
 
     #create a commit message
     f = repository.create_file(filename, "create updated scraper csv", content)
     # Print on screen
-    
-    
+    # df_nuevas_data.to_csv('promodescuentos-nuevas-sixmonths' + str(count_url) + '.csv')
+    # df_nuevas_data.to_excel('promodescuentos-nuevas-sixmonths' + str(count_url) + '.xlsx', encoding='utf-8')
 
 
-    # ----------------------------------------------------------------------------------- #
-    # ------------------------ Encode & Email with Scheduler ---------------------------- # 
+
+        # ----------------------------------------------------------------------------------- #
+        # ------------------------ Encode & Email with Scheduler ---------------------------- # 
 
 
-    # with open(file_path, 'rb') as f:
-    #     data = f.read()
-    #     f.close()
+        # with open(file_path, 'rb') as f:
+        #     data = f.read()
+        #     f.close()
 
-    # encoded = base64.b64encode(data).decode()
-    # message = Mail(
-    # from_email=FROM_EMAIL,
-    # to_emails=TO_EMAIL,
-    # subject='Your File is Ready',
-    # html_content='<strong>Attached is Your Scraped File</strong>')
-    # attachment = Attachment()
-    # attachment.file_content = FileContent(encoded)
-    # attachment.file_type = FileType('text/csv')
-    # attachment.file_name = FileName('nuevas_data.csv')
-    # attachment.disposition = Disposition('attachment')
-    # attachment.content_id = ContentId('Example Content ID')
-    # message.attachment = attachment
+        # encoded = base64.b64encode(data).decode()
+        # message = Mail(
+        # from_email=FROM_EMAIL,
+        # to_emails=TO_EMAIL,
+        # subject='Your File is Ready',
+        # html_content='<strong>Attached is Your Scraped File</strong>')
+        # attachment = Attachment()
+        # attachment.file_content = FileContent(encoded)
+        # attachment.file_type = FileType('text/csv')
+        # attachment.file_name = FileName('nuevas_data.csv')
+        # attachment.disposition = Disposition('attachment')
+        # attachment.content_id = ContentId('Example Content ID')
+        # message.attachment = attachment
 
-    # try:
-    #     sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-    #     response = sg.send(message)
-    #     print(response.status_code)
-    #     print(response.body)
-    #     print(response.headers)
-    # except Exception as e:
-    #         print(e)
+        # try:
+        #     sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        #     response = sg.send(message)
+        #     print(response.status_code)
+        #     print(response.body)
+        #     print(response.headers)
+        # except Exception as e:
+        #         print(e)
 
 
-schedule.every(4).minutes.do(job)
-# # # # # schedule.every().hour.do(job)
-# # # # # schedule.every().day.at('01:57').do(job)
-# # # # # schedule.every(5).to(10).minutes.do(job)
-# # schedule.every().thursday.at('06:00').do(job)
-# # # # # # schedule.every().thursday.at("17:24").do(job)
-# # # # # # schedule.every().minute.at(":17").do(job)
+    # # # # # schedule.every(4).minutes.do(job)
+    # # # # # schedule.every().hour.do(job)
+    # # # # # schedule.every().day.at('01:57').do(job)
+    # # # # # schedule.every(5).to(10).minutes.do(job)
+    schedule.every().thursday.at('14:20').do(job)
+    # # # # # # schedule.every().thursday.at("17:24").do(job)
+    # # # # # # schedule.every().minute.at(":17").do(job)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1) # wait one second
+    while True:
+        schedule.run_pending()
+        time.sleep(1) # wait one second
+
 
 
