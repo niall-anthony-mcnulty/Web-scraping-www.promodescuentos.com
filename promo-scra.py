@@ -180,8 +180,7 @@ def job():
             # driver.get(urls)
 
             r = driver.page_source
-            only_parse = SoupStrainer("div", attrs={"class":"listLayout-main space--mh-a"})
-            soup = BeautifulSoup(r, 'lxml', parse_only=only_parse)
+            soup = BeautifulSoup(r, 'lxml')
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
@@ -679,7 +678,7 @@ def job():
             top_comment.append(None)
             thumbs_up.append(None)
 
-        if (count_url % 1000) == 0:
+        if (count_url % 100) == 0:
             
             finish = time.time()-start
             finish_mins = finish / 60
