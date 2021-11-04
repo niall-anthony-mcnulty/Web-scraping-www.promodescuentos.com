@@ -147,7 +147,7 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url[10000:]:
+    for urls in arr_url[0:300]:
         print(str(count_url)+": "+str(urls))
         count_url += 1
         
@@ -168,14 +168,16 @@ def job():
             # ## ------- Local Driver --------###
             # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
             # # add headless mode
-            # options = Options()
+            # options = webdriver.ChromeOptions()
             # options.add_argument("--headless") # Runs Chrome in headless mode.
+            # options.add_argument("--disable-gpu")
+            # options.add_argument("--disable-dev-shm-usage")
             # options.add_argument('--no-sandbox') # Bypass OS security model
             # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
             # driver.get(urls)
 
             r = driver.page_source
-            soup = BeautifulSoup(r, 'html.parser')
+            soup = BeautifulSoup(r, 'lxml')
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
@@ -793,14 +795,7 @@ def job():
         
 
             
-            
-    #      # Save csv after every 500 iterations  
-    #     if(count%500==0):
-    #         data_dict = {'Degrees':each_url_degrees,'Product':each_url_product,'Final_Price':each_url_final_price,'Original_Price':each_url_original_price,'Free_Shipping':each_url_free_shipping,'Merchant':each_url_merchant, 'Username':each_url_username,'Date':each_url_date,'Origin':each_url_origin,'URL':url, 'Category_1':each_url_category_1,'Category_2':each_url_category_2,'Category_3':each_url_category_3,'Category_4':each_url_category_4,'Category_5':each_url_category_5,'Category_6':each_url_category_6,'Category_7':each_url_category_7,'Category_8':each_url_category_8,'Category_9':each_url_category_9,'top_comment_user':top_comment_user,'top_comment':top_comment,'thumbs_up':thumbs_up}
-    #         df_nuevas_data = pd.DataFrame.from_dict(data_dict)
-    #         df_nuevas_data.to_csv("/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/nuevas_data.csv", index = False)
-    #     count += 1
-        
+    
 
     # # Save complete file
     
@@ -909,6 +904,7 @@ def job():
     
     df_nuevas_data.index += 1
 
+    
     directory = os.path.dirname(os.path.realpath(__file__))
     filename = "nuevas_data.csv"
     file_path = os.path.join(directory, 'csv/', filename)
@@ -920,7 +916,7 @@ def job():
     github = Github(os.environ.get('GIT_KEY'))
     repository = github.get_user().get_repo('Web-scraping-www.promodescuentos.com')
     #path in the repository
-    filename = 'promodescuentos-nuevas-sixmonths.csv'
+    filename = 'promodescuentos-nuevas-'+str(count_url)+'.csv'
     # content to write
     df = df_nuevas_data.to_csv(sep=',', index=False)
     content = df
@@ -965,16 +961,15 @@ def job():
     #         print(e)
 
 
-# # # # schedule.every(10).minutes.do(job)
+schedule.every(4).minutes.do(job)
 # # # # schedule.every().hour.do(job)
 # # # # schedule.every().day.at('01:57').do(job)
 # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().wednesday.at('22:30').do(job)
-# # # # schedule.every().thursday.at("17:24").do(job)
-# # # # schedule.every().minute.at(":17").do(job)
+# schedule.every().thursday.at('06:00').do(job)
+# # # # # schedule.every().thursday.at("17:24").do(job)
+# # # # # schedule.every().minute.at(":17").do(job)
 
 while True:
     schedule.run_pending()
     time.sleep(1) # wait one minute
-
 
