@@ -161,7 +161,6 @@ def job():
             options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
             options.add_argument("--disable-dev-shm-usage")
-            options.add_argument(page_load_strategy = 'none')
             options.add_argument("--disable-gpu")
             options.add_argument("--no-sandbox") # Bypass OS security model
             s=Service(os.environ.get("CHROMEDRIVER_PATH"))
