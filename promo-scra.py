@@ -151,6 +151,7 @@ def job():
 
     count_url = 1
     for urls in arr_url:
+        print(urls)
         count_url += 1
 
         
@@ -678,7 +679,7 @@ def job():
             top_comment.append(None)
             thumbs_up.append(None)
 
-        if (count_url % 100) == 0:
+        if (count_url % 500) == 0:
 
             def date_correction(col):
 
@@ -971,7 +972,7 @@ def job():
     # # # # # schedule.every().hour.do(job)
     # # # # # schedule.every().day.at('01:57').do(job)
     # # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().thursday.at('16:25').do(job)
+schedule.every().thursday.at('16:52').do(job)
 # # # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # # # schedule.every().minute.at(":17").do(job)
 
