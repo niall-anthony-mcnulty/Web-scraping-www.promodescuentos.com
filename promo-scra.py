@@ -10,6 +10,7 @@ import pandas as pd
 import re
 import requests
 from bs4 import BeautifulSoup
+from bs4 import SoupStrainer
 import time
 import pprint
 from datetime import datetime
@@ -24,7 +25,7 @@ import pytz
 import openpyxl
 import os
 from github import Github
-
+import lxml
 
 
 # ---------------------- loop through website for individual URLS ------------------- #
@@ -147,7 +148,7 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url[0:300]:
+    for urls in arr_url[0:50]:
         print(str(count_url)+": "+str(urls))
         count_url += 1
         
@@ -159,6 +160,7 @@ def job():
             options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
             options.add_argument("--disable-dev-shm-usage")
+            options.add_argument(page_load_strategy = 'none')
             options.add_argument("--disable-gpu")
             options.add_argument("--no-sandbox") # Bypass OS security model
             s=Service(os.environ.get("CHROMEDRIVER_PATH"))
@@ -177,7 +179,8 @@ def job():
             # driver.get(urls)
 
             r = driver.page_source
-            soup = BeautifulSoup(r, 'lxml')
+            parse_only = SoupStrainer(id=["main"])
+            soup = BeautifulSoup(r, 'lxml', parse_only=parse_only)
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
@@ -675,7 +678,7 @@ def job():
             top_comment.append(None)
             thumbs_up.append(None)
 
-        if (count_url % 10000) == 0:
+        if (count_url % 5000) == 0:
 
             def date_correction(col):
 
@@ -790,7 +793,7 @@ def job():
             #create a commit message
             f = repository.create_file(filename, "create updated scraper csv", content)
             # Print on screen
-            print(df_nuevas_data)
+           
                     
         
 
@@ -971,5 +974,5 @@ schedule.every(4).minutes.do(job)
 
 while True:
     schedule.run_pending()
-    time.sleep(1) # wait one minute
+    time.sleep(1) # wait one second
 
