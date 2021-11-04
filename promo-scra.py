@@ -149,35 +149,35 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    for urls in arr_url[0:50]:
+    for urls in arr_url[0:10]:
         print(str(count_url)+": "+str(urls))
         count_url += 1
         
         try:
 
-            ## ------- Remote Driver --------###
-            # add headless mode
-            options = webdriver.ChromeOptions()
-            options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
-            options.add_argument("--headless") # Runs Chrome in headless mode.
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument(page_load_strategy = 'none')
-            options.add_argument("--disable-gpu")
-            options.add_argument("--no-sandbox") # Bypass OS security model
-            s=Service(os.environ.get("CHROMEDRIVER_PATH"))
-            driver = webdriver.Chrome(service=s, options=options)
-            driver.get(urls)
-
-            # ## ------- Local Driver --------###
-            # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
+            # ## ------- Remote Driver --------###
             # # add headless mode
             # options = webdriver.ChromeOptions()
+            # options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             # options.add_argument("--headless") # Runs Chrome in headless mode.
-            # options.add_argument("--disable-gpu")
             # options.add_argument("--disable-dev-shm-usage")
-            # options.add_argument('--no-sandbox') # Bypass OS security model
-            # driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            # options.add_argument(page_load_strategy = 'none')
+            # options.add_argument("--disable-gpu")
+            # options.add_argument("--no-sandbox") # Bypass OS security model
+            # s=Service(os.environ.get("CHROMEDRIVER_PATH"))
+            # driver = webdriver.Chrome(service=s, options=options)
             # driver.get(urls)
+
+            ## ------- Local Driver --------###
+            DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
+            # add headless mode
+            options = webdriver.ChromeOptions()
+            options.add_argument("--headless") # Runs Chrome in headless mode.
+            options.add_argument("--disable-gpu")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument('--no-sandbox') # Bypass OS security model
+            driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+            driver.get(urls)
 
             r = driver.page_source
             parse_only = SoupStrainer(id=["main"])
@@ -930,6 +930,7 @@ def job():
     f = repository.create_file(filename, "create updated scraper csv", content)
     # Print on screen
     print(df_nuevas_data)
+    return df_nuevas_data
     
 
 
@@ -965,15 +966,18 @@ def job():
     #         print(e)
 
 
-schedule.every(4).minutes.do(job)
-# # # # schedule.every().hour.do(job)
-# # # # schedule.every().day.at('01:57').do(job)
-# # # # schedule.every(5).to(10).minutes.do(job)
-# schedule.every().thursday.at('06:00').do(job)
-# # # # # schedule.every().thursday.at("17:24").do(job)
-# # # # # schedule.every().minute.at(":17").do(job)
+# schedule.every(4).minutes.do(job)
+# # # # # schedule.every().hour.do(job)
+# # # # # schedule.every().day.at('01:57').do(job)
+# # # # # schedule.every(5).to(10).minutes.do(job)
+# # schedule.every().thursday.at('06:00').do(job)
+# # # # # # schedule.every().thursday.at("17:24").do(job)
+# # # # # # schedule.every().minute.at(":17").do(job)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1) # wait one second
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1) # wait one second
 
+x = job()
+
+pprint.pprint(x)
