@@ -9,8 +9,8 @@ from selenium.webdriver.chrome.service import Service
 import pandas as pd
 import re
 import requests
+import bs4
 from bs4 import BeautifulSoup
-from bs4 import SoupStrainer
 import time
 import pprint
 from datetime import datetime
@@ -180,7 +180,7 @@ def job():
 
             r = driver.page_source
             parse_only = SoupStrainer(id=["main"])
-            soup = BeautifulSoup(r, 'lxml', parse_only=parse_only)
+            soup = BeautifulSoup(r, 'lxml.html', parse_only=parse_only)
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
