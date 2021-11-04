@@ -1,5 +1,6 @@
 ## imports
 
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -149,14 +150,13 @@ def job():
     thumbs_up = []
 
     count_url = 1
-    start = time.time()
     for urls in arr_url:
         count_url += 1
 
         
         try:
 
-            ## ------- Remote Driver --------###
+            # ------- Remote Driver --------###
             # add headless mode
             options = webdriver.ChromeOptions()
             options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
@@ -168,7 +168,7 @@ def job():
             driver = webdriver.Chrome(service=s, options=options)
             driver.get(urls)
 
-            ## ------- Local Driver --------###
+            # ------- Local Driver --------###
             # DRIVER_PATH = '/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/chromedriver'
             # # add headless mode
             # options = webdriver.ChromeOptions()
@@ -679,10 +679,6 @@ def job():
             thumbs_up.append(None)
 
         if (count_url % 100) == 0:
-            
-            finish = time.time()-start
-            finish_mins = finish / 60
-            print(finish_mins)
 
             def date_correction(col):
 
@@ -780,11 +776,11 @@ def job():
             # df_nuevas_data.to_csv('promodescuentos-nuevas-sixmonths' + str(count_url) + '.csv')
             # df_nuevas_data.to_excel('promodescuentos-nuevas-sixmonths' + str(count_url) + '.xlsx', encoding='utf-8')
 
-            directory = os.path.dirname(os.path.realpath(__file__))
-            filename = "nuevas_data.csv"
-            file_path = os.path.join(directory, 'csv/', filename)
-            # # Save to csv format to handle encoding
-            df_nuevas_data.to_csv(file_path)
+            # directory = os.path.dirname(os.path.realpath(__file__))
+            # filename = "nuevas_data.csv"
+            # file_path = os.path.join(directory, 'csv/', filename)
+            # # # Save to csv format to handle encoding
+            # df_nuevas_data.to_csv(file_path)
 
             
             # save to git using PyGithub
@@ -914,12 +910,11 @@ def job():
 
     df_nuevas_data.index += 1
 
-
-    directory = os.path.dirname(os.path.realpath(__file__))
-    filename = "nuevas_data.csv"
-    file_path = os.path.join(directory, 'csv/', filename)
-    # # Save to csv format to handle encoding
-    df_nuevas_data.to_csv(file_path)
+    # directory = os.path.dirname(os.path.realpath(__file__))
+    # filename = "nuevas_data.csv"
+    # file_path = os.path.join(directory, 'csv/', filename)
+    # # # Save to csv format to handle encoding
+    # df_nuevas_data.to_csv(file_path)
 
 
     # save to git using PyGithub
@@ -976,13 +971,17 @@ def job():
     # # # # # schedule.every().hour.do(job)
     # # # # # schedule.every().day.at('01:57').do(job)
     # # # # # schedule.every(5).to(10).minutes.do(job)
-    schedule.every().thursday.at('13:00').do(job)
-    # # # # # # schedule.every().thursday.at("17:24").do(job)
-    # # # # # # schedule.every().minute.at(":17").do(job)
+schedule.every().thursday.at('16:25').do(job)
+# # # # # # schedule.every().thursday.at("17:24").do(job)
+# # # # # # schedule.every().minute.at(":17").do(job)
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1) # wait one second
+while True:
+    schedule.run_pending()
+    time.sleep(1) # wait one second
+
+
+
+
 
 
 
