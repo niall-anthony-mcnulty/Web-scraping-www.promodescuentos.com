@@ -11,6 +11,7 @@ import re
 import requests
 import bs4
 from bs4 import BeautifulSoup
+from bs4 import SoupStrainer
 import time
 import pprint
 from datetime import datetime
