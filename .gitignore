@@ -10,7 +10,4 @@
 *.DS_Store
 
 
-!nuevas_urls.csv
-!nuevas_data.csv
-!promodescuentos-nuevas-sixmonths.csv
 *.env
