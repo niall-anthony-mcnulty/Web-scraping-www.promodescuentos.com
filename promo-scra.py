@@ -162,6 +162,7 @@ def job():
             options = webdriver.ChromeOptions()
             options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
             options.add_argument("--headless") # Runs Chrome in headless mode.
+            options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--disable-gpu")
             options.add_argument("--no-sandbox") # Bypass OS security model
             s=Service(os.environ.get("CHROMEDRIVER_PATH"))
@@ -180,7 +181,7 @@ def job():
             # driver.get(urls)
 
             r = driver.page_source
-            soup = BeautifulSoup(r, 'lxml')
+            soup = BeautifulSoup(r, 'html.parser')
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
@@ -259,24 +260,23 @@ def job():
 
             # check for envio gratis and return true
             substring1 = 'Envio gratis'
-            try:
+           
 
-                if (try1 is not None) and (substring1 in try1.text):
-                # append to list
-                    each_url_free_shipping.append(True)
-                elif (try2 is not None) and (substring1 in try2.text):
-                    each_url_free_shipping.append(True) 
-                elif (try3 is not None) and (substring1 in try3.text):
-                    each_url_free_shipping.append(True)
-                elif (try4 is not None) and (substring1 in try4.text):
-                    each_url_free_shipping.append(True)
-                elif (try5 is not None) and (substring1 in try5.text):
-                    each_url_free_shipping.append(True)
-                else:
-                    each_url_free_shipping.append(False)
-
-            except:
+            if (try1 is not None) and (substring1 in try1.text):
+            # append to list
+                each_url_free_shipping.append(True)
+            elif (try2 is not None) and (substring1 in try2.text):
+                each_url_free_shipping.append(True) 
+            elif (try3 is not None) and (substring1 in try3.text):
+                each_url_free_shipping.append(True)
+            elif (try4 is not None) and (substring1 in try4.text):
+                each_url_free_shipping.append(True)
+            elif (try5 is not None) and (substring1 in try5.text):
+                each_url_free_shipping.append(True)
+            else:
                 each_url_free_shipping.append(False)
+
+            
 
         #--------------------------------------------------------------------------------------------------------------------#
         # loop through URLS and obtain merchant
@@ -971,7 +971,7 @@ def job():
     # # # # # schedule.every().hour.do(job)
     # # # # # schedule.every().day.at('01:57').do(job)
     # # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().thursday.at('15:02').do(job)
+schedule.every().friday.at('00:30').do(job)
 # # # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # # # schedule.every().minute.at(":17").do(job)
 
