@@ -76,7 +76,7 @@ def job():
     
 
     count_url = 1
-    for urls in arr_url[0:100]:
+    for urls in arr_url:
         print(str(count_url) + ' ' + str(urls))
         count_url += 1
 
@@ -545,7 +545,7 @@ def job():
             each_url_category_9.append(None)
             
 
-        if (count_url % 500) == 0:
+        if (count_url % 1000) == 0:
 
             def date_correction(col):
 
@@ -782,11 +782,11 @@ def job():
 
 # scheduler
 
-schedule.every(2).minutes.do(job)
+# # # # # schedule.every(2).minutes.do(job)
 # # # # # schedule.every().hour.do(job)
 # # # # # schedule.every().day.at('01:57').do(job)
 # # # # # schedule.every(5).to(10).minutes.do(job)
-# # # # # schedule.every().friday.at('00:30').do(job)
+schedule.every().friday.at('10:36').do(job)
 # # # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # # # schedule.every().minute.at(":17").do(job)
 
