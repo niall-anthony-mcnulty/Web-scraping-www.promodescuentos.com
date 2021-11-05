@@ -104,8 +104,8 @@ def job():
 
         
             r = requests.get(urls, headers=headers).text
-            strained = SoupStrainer('div', attrs={'id': 'thread_details_663219'})
-            soup = BeautifulSoup(r, 'lxml', parse_only=strained)
+            # strained = SoupStrainer('div', attrs={'id': 'thread_details_663219'})
+            soup = BeautifulSoup(r, 'lxml')
 
         #--------------------------------------------------------------------------------------------------------------------#   
         # append URL to list
@@ -657,10 +657,6 @@ def job():
             f = repository.create_file(filename, "create updated scraper csv", content)
             
             
-                    
-        
-
-            
 
 
     # # Save complete file
@@ -797,9 +793,6 @@ schedule.every(2).minutes.do(job)
 while True:
     schedule.run_pending()
     time.sleep(1) # wait one second
-
-
-
 
 
 # test locally ------
