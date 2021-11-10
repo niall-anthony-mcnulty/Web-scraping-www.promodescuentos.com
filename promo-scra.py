@@ -39,7 +39,7 @@ def job():
     #read in URL csv - Load in from your own directory
 
     directory = os.path.dirname(__file__)
-    filename = "csv/nuevas_urls.csv"
+    filename = "csv/nuevas_urls-first-60.csv"
     file_path = os.path.join(directory, filename)
     df_url = pd.read_csv(file_path, index_col=False)
 
@@ -545,7 +545,7 @@ def job():
             each_url_category_9.append(None)
             
 
-        if (count_url % 1000) == 0:
+        if (count_url % 400) == 0:
 
             def date_correction(col):
 
@@ -786,7 +786,7 @@ def job():
 # # # # # schedule.every().hour.do(job)
 # # # # # schedule.every().day.at('01:57').do(job)
 # # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().friday.at('10:36').do(job)
+schedule.every().wednesday.at('12:15').do(job)
 # # # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # # # schedule.every().minute.at(":17").do(job)
 
