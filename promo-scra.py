@@ -39,7 +39,7 @@ def job():
     #read in URL csv - Load in from your own directory
 
     directory = os.path.dirname(__file__)
-    filename = "csv/nuevas_urls-first-60.csv"
+    filename = "csv/nuevas_urls-nov-2-date.csv"
     file_path = os.path.join(directory, filename)
     df_url = pd.read_csv(file_path, index_col=False)
 
@@ -786,9 +786,10 @@ def job():
 # # # # # schedule.every().hour.do(job)
 # # # # # schedule.every().day.at('01:57').do(job)
 # # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().wednesday.at('12:15').do(job)
+schedule.every().saturday.at('11:50').do(job)
 # # # # # # schedule.every().thursday.at("17:24").do(job)
-# # # # # # schedule.every().minute.at(":17").do(job)
+# # # # 
+# # # schedule.every().minute.at(":17").do(job)
 
 while True:
     schedule.run_pending()
