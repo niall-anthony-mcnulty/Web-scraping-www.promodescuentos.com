@@ -38,7 +38,7 @@ pageno = 1
 arr_url  = []
 
 # loop through pages until pages run out
-while pageno < 61:
+while pageno < 565:
     
     
 
@@ -94,7 +94,7 @@ df = pd.DataFrame(arr_url, columns = ['urls'])
 
 # save to csv - Save to your own directory
 
-df.to_csv("/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/nuevas_urls-first-60.csv", index = False)
+df.to_csv("/Users/Niall-McNulty/Desktop/Computer Science Projects:Courses/Web Scraping/Web-scraping-www.promodescuentos.com/nuevas_urls-nov-2-date.csv", index = False)
 
 
 # ----------------------------------------------------------------------------------- #

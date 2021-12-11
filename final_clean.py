@@ -1,7 +1,7 @@
 import pandas as pd
 import openpyxl
 
-df = pd.read_csv('promodescuentos-nuevas-39981.csv')
+df = pd.read_csv('promodescuentos-nuevas-1201.csv')
 
-df.to_excel("promodescuentos-nuevas-final.xlsx", encoding="utf-8")
+df.to_excel("promodescuentos-nuevas-first-1201.xlsx", encoding="utf-8")
 
