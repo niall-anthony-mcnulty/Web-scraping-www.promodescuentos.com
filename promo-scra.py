@@ -76,7 +76,7 @@ def job():
     
 
     count_url = 1
-    for urls in arr_url:
+    for urls in arr_url[:10]:
         print(str(count_url) + ' ' + str(urls))
         count_url += 1
 
@@ -786,7 +786,7 @@ def job():
 # # # # # schedule.every().hour.do(job)
 # # # # # schedule.every().day.at('01:57').do(job)
 # # # # # schedule.every(5).to(10).minutes.do(job)
-schedule.every().saturday.at('11:50').do(job)
+schedule.every().monday.at('06:10').do(job)
 # # # # # # schedule.every().thursday.at("17:24").do(job)
 # # # # 
 # # # schedule.every().minute.at(":17").do(job)
