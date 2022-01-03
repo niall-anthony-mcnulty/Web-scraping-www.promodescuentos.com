@@ -121,7 +121,7 @@ def job():
         #--------------------------------------------------------------------------------------------------------------------#              
         #loop through URLS and obtain degree integer  
             try:
-                degrees = soup.find('div',{'class' : "cept-vote-box"}).text
+                degrees = soup.find('div',{'class' : "vote-box"}).text
                 degrees = re.sub('[^-?0-9]', '', degrees)
                 # return only digits
                 each_url_degrees.append(int(degrees))
@@ -133,7 +133,7 @@ def job():
 
 
             try:
-                product = soup.find('span',{'class' : "thread-title--item"}).text
+                product = soup.find('h1',{'class' : "thread-title"}).text
                 each_url_product.append(product)
             except:
                 each_url_product.append(None)
@@ -144,7 +144,7 @@ def job():
 
 
             try:
-                final_price = soup.find('span',{'class' : "cept-tp"}).text
+                final_price = soup.find('span',{'class' : "thread-price"}).text
                 substring = 'GRATIS'
                 # check if final price is GRATIS - return 0 if so
                 if substring in final_price:
@@ -163,7 +163,7 @@ def job():
 
 
             try:
-                original_price = soup.find('span',{'class' : "cept-next-best-price"}).text
+                original_price = soup.find('span',{'class' : "space--fromW3-t-2"}).text
                 original_price = re.sub('[^0-9]', '', original_price)
                 each_url_original_price.append(int(original_price))
             except:
@@ -209,7 +209,7 @@ def job():
 
 
             try:
-                merchant = soup.find('span',{'class' : "cept-merchant-name"}).text
+                merchant = soup.find('span',{'class' : "text--color-brandPrimary"}).text
                 merchant = re.sub('[\s*$]', '', merchant)
 
 
